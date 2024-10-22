@@ -77,8 +77,17 @@ let originalWords = [
     "Cumbre Barco Horizonte", "Lago Brisa Despertar", "Océano Puente Eco"
 ];
 
+
+// Función para mezclar el array original de palabras
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Intercambia elementos
+    }
+    return array;
+}
+
 function startExercise() {
-    
     // Ocultar instrucciones y botones
     var instructionParagraphs = document.querySelectorAll('.instruction');
     for (var i = 0; i < instructionParagraphs.length; i++) {
@@ -94,13 +103,14 @@ function startExercise() {
     var speedInput = document.getElementById('speedInput');
     var velocidadRecorrido = parseInt(speedInput.value);
     
-    // Iniciar temporizador
-    
+    // Mezclar las palabras
+    let shuffledWords = shuffleArray([...originalWords]); // Mezclar palabras
+
     // Iniciar el recorrido visual
-    startVisualRecorrido(velocidadRecorrido);
+    startVisualRecorrido(velocidadRecorrido, shuffledWords);
 }
 
-function startVisualRecorrido(velocidadRecorrido) {
+function startVisualRecorrido(velocidadRecorrido, words) {
     var wordIndex = 0;
     clearInterval(visualInterval);
     
@@ -108,13 +118,13 @@ function startVisualRecorrido(velocidadRecorrido) {
         // Mostrar la palabra en la ranura central
         wordSlot.innerHTML = ''; // Limpiar ranura
         var p = document.createElement('p');
-        p.textContent = originalWords[wordIndex];
+        p.textContent = words[wordIndex]; // Usar la palabra aleatoria
         wordSlot.appendChild(p);
         
         // Incrementar el índice de las palabras
         wordIndex++;
-        if (wordIndex >= originalWords.length) {
-            wordIndex = 0;
+        if (wordIndex >= words.length) {
+            wordIndex = 0; // Reiniciar al final del array
         }
     }, velocidadRecorrido);
 }
@@ -138,4 +148,3 @@ function startTimer() {
         totalTime--;
     }, 1000);
 }
-
